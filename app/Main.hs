@@ -13,48 +13,24 @@ import Database.Beam.Sqlite
 import qualified Database.Beam.Sqlite.Migrate as Sqlite
 import Database.SQLite.Simple
 import Q2.Types
+import qualified Q2.Web.Api as Web.Api
+import MocData
+import Network.Wai.Handler.Warp
 
-main :: IO ()
-main = do
-  conn <- open "/tmp/shoppingcart1.db"
-  [id1, id2, id3, id4] <- traverse (\_ -> toText <$> nextRandom) [0, 1, 2, 3]
-  runBeamSqliteDebug putStrLn {- for debug output -} conn $ do
-    autoMigrate Sqlite.migrationBackend shoppingCartDb
+
+main, main2 :: IO ()
+main =  run 9000 Web.Api.userApp
+
+
+main2 = do
+  let users = MocData.mocUsers
+  conn <- open "/tmp/q2users.db"
+  runBeamSqlite conn $ do
+    users <- liftIO mocUsers
+    autoMigrate Sqlite.migrationBackend q2UserDb
     runInsert $
-      insert (_shoppingCartUsers $ unCheckDatabase shoppingCartDb) $
-        insertValues
-          [ User
-              id1
-              "james@example.com"
-              "James"
-              "Smith"
-              "b4cc344d25a2efe540adbf2678e2304c"
-              (Just "JS")
-            "us-west-1",
-            User
-              id2
-              "betty@example.com"
-              "Betty"
-              "Jones"
-              "82b054bd83ffad9b6cf8bdb98ce3cc2f"
-              (Just "BJ")
-            "us-west-1",
-            User
-              id3
-              "sam@example.com"
-              "Sam"
-              "Taylor"
-              "332532dcfaa1cbf61e2a266bd723612c"
-              Nothing
-            "us-west-1",
-            User
-              id4
-              "sam2@example.com"
-              "Sam2"
-              "Taylor2"
-              "332532dcfaa1cbf61e2a266bd723612c"
-              (Just "123")
-            "us-west-1"
-          ]
+      insert (_q2User $ unCheckDatabase q2UserDb) $
+        insertValues users
+
   print $
     "Hello from " ++ doBeamT1 ++ "!"

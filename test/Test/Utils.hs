@@ -31,11 +31,11 @@ instance Arbitrary DbKey where
 instance Arbitrary User where
   arbitrary = do
     _userId   <- unKey <$> arbitrary
-    -- let _userId = unKey keyId
     _userEmail <- T.pack . getUnicodeString <$> arbitrary
     _userFirstName <- T.pack . getUnicodeString <$> arbitrary
     _userLastName <- T.pack . getUnicodeString <$> arbitrary
     _userPassword <- T.pack . getUnicodeString <$> arbitrary
     _userName <- elements [Just "app_dev", Just "app_dev2", Nothing]
+    _userIsRegistered <- choose (True, False)
     _userRegion <- elements (["us-west-1", "us-west-2", "us-east-1", "us-east-2", "central-europ", "asia"] :: [T.Text])
     return $ User {..}

@@ -3,7 +3,7 @@
 module Main where
 import Test.Tasty
 import Test.Tasty
-import qualified Test.OAuthSpec
+import qualified Test.Q2.Specifications
 
 main :: IO ()
 main = defaultMain  =<< beamTestTree
@@ -14,5 +14,5 @@ beamTestTree = do
     testGroup
      "beam"
      [
-       Test.OAuthSpec.testTree
+       Test.Q2.Specifications.testTree
      ]

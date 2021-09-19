@@ -35,6 +35,8 @@ dependencies:
   - vector
   - modern-uri
   - SHA
+  - servant-server
+  - servant
   - wai
   - warp
   - network
@@ -84,3 +86,5 @@ tests:
       - tasty-smallcheck
       - generic-random
       - uuid
+      - hspec-wai
+      - hspec-wai-json
