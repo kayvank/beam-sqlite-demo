@@ -33,13 +33,14 @@ data UserT f = User
   }
   deriving (Generic, Beamable)
 
+instance Eq User where
+  (User userId1 _ _ _ _ _ _ _) == (User userId2 _ _ _ _ _ _ _) = userId1 == userId2
+
 type User = UserT Identity
 
 type UserId = PrimaryKey UserT Identity
 
 deriving instance Show User
-
-deriving instance Eq User
 
 instance Table UserT where
   data PrimaryKey UserT f = UserId (Columnar f Text) deriving (Generic, Beamable)

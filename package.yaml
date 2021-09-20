@@ -36,6 +36,7 @@ dependencies:
   - modern-uri
   - SHA
   - servant-server
+  - servant-client
   - servant
   - wai
   - warp
